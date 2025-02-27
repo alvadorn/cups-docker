@@ -13,7 +13,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    continue-on-error: true
     strategy:
+      max-parallel: 2
+      fail-fast: false
       matrix:
         variant: [ bookworm, bookworm-slim, bullseye, bullseye-slim ]
     # sequence of tasks in the build process
