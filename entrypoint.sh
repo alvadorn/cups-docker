@@ -16,4 +16,9 @@ if [ ! -f /etc/cups/cupsd.conf ]; then
     cp -rpn /etc/cups-bak/* /etc/cups/
 fi
 
-exec /usr/sbin/cupsd -f
+/usr/sbin/cupsd -f &
+PID=$!
+
+trap 'echo "Received STOP signal, closing..."; kill -SIGTERM $PID; wait $PID' SIGTERM SIGINT
+
+wait $PID
