@@ -19,7 +19,7 @@ docker run -d --name cups \
     --device /dev/bus/usb \
     -e CUPSADMIN=batman \
     -e CUPSPASSWORD=batcave_password \
-    -e TZ="America/Gotham" \
+    -e TZ="America/Sao_Paulo" \
     -v <persistent-config-folder>:/etc/cups \
     alvadorn/cups
 ```
@@ -34,11 +34,11 @@ docker run -d --name cups \
 - `volume` -> adds a persistent volume for CUPS config files if you need to migrate or start a new container with the same settings
 
 Environment variables that can be changed to suit your needs, use the `-e` tag
-| #   | Parameter    | Default            | Type   | Description                       |
-| --- | ------------ | ------------------ | ------ | --------------------------------- |
-| 1   | TZ           | "America/New_York" | string | Time zone of your server          |
-| 2   | CUPSADMIN    | admin              | string | Name of the admin user for server |
-| 3   | CUPSPASSWORD | password           | string | Password for server admin         |
+| #   | Parameter    | Default  | Type   | Description                       |
+| --- | ------------ | -------- | ------ | --------------------------------- |
+| 1   | TZ           | "UTC"    | string | Time zone of your server          |
+| 2   | CUPSADMIN    | admin    | string | Name of the admin user for server |
+| 3   | CUPSPASSWORD | password | string | Password for server admin         |
 
 ### docker-compose
 ```yaml
