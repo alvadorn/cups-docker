@@ -2,14 +2,13 @@
 
 Run a CUPS print server on a remote machine to share USB printers over WiFi. Built primarily to use with Raspberry Pis as a headless server, but there is no reason this wouldn't work on `amd64` machines. Tested and confirmed working on a Raspberry Pi 3B+ (`arm/v7`) and Raspberry Pi 4 (`arm64/v8`).
 
-Container packages available from Docker Hub and Github Container Registry (ghcr.io)
-  - Docker Hub Image: `anujdatar/cups`
-  - GHCR Image: `ghcr.io/anujdatar/cups`
+Container packages available from Docker Hub
+  - Docker Hub Image: `alvadorn/cups`
 
 ## Usage
 Quick start with default parameters
 ```sh
-docker run -d -p 631:631 --device /dev/bus/usb --name cups anujdatar/cups
+docker run -d -p 631:631 --device /dev/bus/usb --name cups alvadorn/cups
 ```
 
 Customizing your container
@@ -22,7 +21,7 @@ docker run -d --name cups \
     -e CUPSPASSWORD=batcave_password \
     -e TZ="America/Gotham" \
     -v <persistent-config-folder>:/etc/cups \
-    anujdatar/cups
+    alvadorn/cups
 ```
 > Note: :P make sure you use valid TZ string, this is just a joke. Also changing the default username and password is highly recommended.
 
@@ -35,18 +34,18 @@ docker run -d --name cups \
 - `volume` -> adds a persistent volume for CUPS config files if you need to migrate or start a new container with the same settings
 
 Environment variables that can be changed to suit your needs, use the `-e` tag
-| # | Parameter    | Default            | Type   | Description                       |
-| - | ------------ | ------------------ | ------ | --------------------------------- |
-| 1 | TZ           | "America/New_York" | string | Time zone of your server          |
-| 2 | CUPSADMIN    | admin              | string | Name of the admin user for server |
-| 3 | CUPSPASSWORD | password           | string | Password for server admin         |
+| #   | Parameter    | Default            | Type   | Description                       |
+| --- | ------------ | ------------------ | ------ | --------------------------------- |
+| 1   | TZ           | "America/New_York" | string | Time zone of your server          |
+| 2   | CUPSADMIN    | admin              | string | Name of the admin user for server |
+| 3   | CUPSPASSWORD | password           | string | Password for server admin         |
 
 ### docker-compose
 ```yaml
 version: "3"
 services:
     cups:
-        image: anujdatar/cups
+        image: alvadorn/cups
         container_name: cups
         restart: unless-stopped
         ports:
@@ -67,4 +66,4 @@ You should now be able to access CUPS admin server using the IP address of your 
 If you are running this on your PC, i.e. not on a headless server, you should be able to log in on http://localhost:631
 
 ## Thanks
-Based on the work done by **RagingTiger**: [https://github.com/RagingTiger/cups-airprint](https://github.com/RagingTiger/cups-airprint)
+* This repository is a fork of [anujdatar/cups-docker](https://github.com/anujdatar/cups-docker) repository.
