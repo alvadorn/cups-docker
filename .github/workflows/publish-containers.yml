@@ -11,8 +11,11 @@ on:
     - cron: "0 3 * * 0"
 
 jobs:
-  build-for-docker-hub:
+  build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        variant: [ bookworm, bookworm-slim, bullseye, bullseye-slim ]
     # sequence of tasks in the build process
     steps:
       - name: Checkout repo
@@ -23,17 +26,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USER }}
           password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Extract metadata (tags, labels) for container image
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ secrets.DOCKER_USER }}/cups
-          tags: |
-            type=semver,pattern={{version}}
-            type=raw,value={{date 'YY.MM.DD'}}
-          flavor: |
-            latest=true
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -48,5 +40,8 @@ jobs:
           file: ./Dockerfile
           platforms: linux/arm/v7,linux/arm64,linux/amd64
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: |
+            ${{ secrets.DOCKER_USER }}/cups:${{ matrix.variant }}
+            ${{ (matrix.variant == 'bookworm-slim' && format('{0}/cups:latest', secrets.DOCKER_USER)) || '' }}
+          build-args: |
+            BASE_IMAGE=debian:${{ matrix.variant }}

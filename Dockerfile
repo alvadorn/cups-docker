@@ -1,4 +1,5 @@
-FROM debian:bookworm-slim
+ARG BASE_IMAGE
+FROM ${BASE_IMAGE}
 
 # ENV variables
 ENV DEBIAN_FRONTEND=noninteractive
