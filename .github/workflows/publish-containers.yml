@@ -1,8 +1,6 @@
 name: Publish CUPS Docker Image to Docker Hub
 
-# Controls when the action will be run
 on:
-  # triggers on push or pull request events on main branch
   push:
     branches: [ main ]
   pull_request:
@@ -18,8 +16,7 @@ jobs:
       max-parallel: 2
       fail-fast: false
       matrix:
-        variant: [ bookworm, bookworm-slim, bullseye, bullseye-slim ]
-    # sequence of tasks in the build process
+        variant: [ bookworm, bookworm-slim ]
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
